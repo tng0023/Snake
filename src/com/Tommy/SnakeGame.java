@@ -17,8 +17,8 @@ public class SnakeGame {
 	public static int ySquares ;
 
 	public final static int squareSize = 25;
-	public static int bottomPanelHeight = 120; //TN - Sets a border on the bottom of screen
-	public static int topPanelHeight = 120; //TN - Sets a border on the right side of screen for the score to appear
+	public final static int bottomPanelHeight = 120; //TN - Sets a border on the bottom of screen //FINDBUGS - added final
+	public final static int topPanelHeight = 120; //TN - Sets a border on the right side of screen for the score to appear //FINDBUGS - added final
 
 	protected static Snake snake ;
 
@@ -34,10 +34,10 @@ public class SnakeGame {
 	//Using constant names instead makes it easier to keep it straight. Refer to these variables 
 	//using statements such as SnakeGame.GAME_OVER 
 
-	private static int gameStage = BEFORE_GAME;  //use this to figure out what should be happening. 
+	private static int gameStage = BEFORE_GAME;  //use this to figure out what should be happening. //FINDBUGS - added final
 	//Other classes like Snake and DrawSnakeGamePanel will query this, and change its value
 
-	protected static long clockInterval = 200; //controls game speed
+	protected final static long clockInterval = 200; //controls game speed
 	//Every time the clock ticks, the snake moves
 	//This is the time between clock ticks, in milliseconds
 	//1000 milliseconds = 1 second.

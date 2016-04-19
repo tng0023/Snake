@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 public class Snake {
 
-	final int DIRECTION_UP = 0;
-	final int DIRECTION_DOWN = 1;
-	final int DIRECTION_LEFT = 2;
-	final int DIRECTION_RIGHT = 3;  //These are completely arbitrary numbers. 
+	final static int DIRECTION_UP = 0; //FINDBUGS added final
+	final static int DIRECTION_DOWN = 1;//FINDBUGS added final
+	final static int DIRECTION_LEFT = 2;//FINDBUGS added final
+	final static int DIRECTION_RIGHT = 3;  //These are completely arbitrary numbers. //FINDBUGS added final
 
-	private boolean hitWall = false;
+	//private boolean hitWall = false; //FINDBUGS did not use
 
 	private boolean hitMazeWall = false;
 

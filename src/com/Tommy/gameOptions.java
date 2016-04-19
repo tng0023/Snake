@@ -34,10 +34,9 @@ public class gameOptions extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SnakeGame.getGameStage();
-                SnakeGame.setGameStage(SnakeGame.BEFORE_GAME);
                 SnakeGame.initializeGame();
                 SnakeGame.createAndShowGUI();
+                SnakeGame.setGameStage(SnakeGame.BEFORE_GAME);
                 SnakeGame.getGameStage();
                 SnakeGame.setGameStage(SnakeGame.DURING_GAME);
                 SnakeGame.newGame();

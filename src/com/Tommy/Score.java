@@ -49,7 +49,7 @@ public class Score {
 		return Integer.toString(score);
 	}
 
-	public String newHighScore() {
+	protected String newHighScore() { //FINDBUGS added protected
 		
 		if (score > highScore) {
 			highScore = score;

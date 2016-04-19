@@ -1,5 +1,8 @@
 package com.Tommy;
 
+import java.awt.*;
+import java.util.*;
+
 import java.util.Timer;
 
 import javax.swing.*;
@@ -13,7 +16,9 @@ public class SnakeGame {
 	public static int xSquares ;
 	public static int ySquares ;
 
-	public final static int squareSize = 50;
+	public final static int squareSize = 25;
+	public static int bottomPanelHeight = 120; //TN - Sets a border on the bottom of screen
+	public static int topPanelHeight = 120; //TN - Sets a border on the right side of screen for the score to appear
 
 	protected static Snake snake ;
 
@@ -32,7 +37,7 @@ public class SnakeGame {
 	private static int gameStage = BEFORE_GAME;  //use this to figure out what should be happening. 
 	//Other classes like Snake and DrawSnakeGamePanel will query this, and change its value
 
-	protected static long clockInterval = 500; //controls game speed
+	protected static long clockInterval = 200; //controls game speed
 	//Every time the clock ticks, the snake moves
 	//This is the time between clock ticks, in milliseconds
 	//1000 milliseconds = 1 second.
@@ -45,26 +50,32 @@ public class SnakeGame {
 
 
 	public static void main(String[] args) {
+		//create and set up options window to run snake game
+		gameOptions options = new gameOptions();
 		//Schedule a job for the event-dispatching thread:
 		//creating and showing this application's GUI.
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				initializeGame();
-				createAndShowGUI();
-			}
-		});
-	}
+//		SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				//initializeGame();
+//				//createAndShowGUI();
+//
+//			}
+		}
 
 
-	private static void createAndShowGUI() {
-		//Create and set up the window.
+
+	public static void createAndShowGUI() {
 		snakeFrame = new JFrame();
 		snakeFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		snakeFrame.setSize(xPixelMaxDimension, yPixelMaxDimension);
-		snakeFrame.setUndecorated(true); //hide title bar
+		//added bottompanel height to fix bug of snake going past bottom wall
+		snakeFrame.setSize(xPixelMaxDimension + topPanelHeight, yPixelMaxDimension + bottomPanelHeight);
+		snakeFrame.setUndecorated(false); //hide title bar
+		snakeFrame.setTitle("Snake"); //added to show name of game at title bar of gui
 		snakeFrame.setVisible(true);
-		snakeFrame.setResizable(false);
+		snakeFrame.setResizable(true);
+		snakeFrame.setLocationRelativeTo(null);
+
 
 		snakePanel = new DrawSnakeGamePanel(componentManager);
 
@@ -82,18 +93,20 @@ public class SnakeGame {
 		snakeFrame.setVisible(true);
 	}
 
-	private static void initializeGame() {
+	public static void initializeGame() {
 
-		//set up score, snake and first kibble
+		//set up score, snake, first kibble, and maze block
 		xSquares = xPixelMaxDimension / squareSize;
 		ySquares = yPixelMaxDimension / squareSize;
 
 		componentManager = new GameComponentManager();
 		snake = new Snake(xSquares, ySquares, squareSize);
 		Kibble kibble = new Kibble(snake);
+		Maze maze = new Maze(snake);
 
 		componentManager.addSnake(snake);
 		componentManager.addKibble(kibble);
+		componentManager.addMaze(maze);
 
 		score = new Score();
 
@@ -101,6 +114,7 @@ public class SnakeGame {
 
 		gameStage = BEFORE_GAME;
 	}
+
 
 	protected static void newGame() {
 		Timer timer = new Timer();
@@ -117,4 +131,6 @@ public class SnakeGame {
 	public static void setGameStage(int gameStage) {
 		SnakeGame.gameStage = gameStage;
 	}
-}
+
+	}
+

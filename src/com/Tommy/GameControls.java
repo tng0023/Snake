@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GameControls implements KeyListener{
-	
+
 
 	public void keyPressed(KeyEvent ev) {
 		//keyPressed events are for catching events like function keys, enter, arrow keys
@@ -12,7 +12,7 @@ public class GameControls implements KeyListener{
 		//Has to id if user pressed arrow key, and if so, send info to Snake object
 
 		//is game running? No? tell the game to draw grid, start, etc.
-		
+
 		//Get the component which generated this event
 		//Hopefully, a DrawSnakeGamePanel object.
 
@@ -25,7 +25,7 @@ public class GameControls implements KeyListener{
 			panel.repaint();
 			return;
 		}
-		
+
 		if (SnakeGame.getGameStage() == SnakeGame.GAME_OVER){
 			Score.resetScore();
 
@@ -41,7 +41,7 @@ public class GameControls implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent ev) {
-		//We don't care about keyReleased events, but are required to implement this method anyway.		
+		//We don't care about keyReleased events, but are required to implement this method anyway.
 	}
 
 

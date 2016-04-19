@@ -11,6 +11,9 @@ public class Snake {
 	final int DIRECTION_RIGHT = 3;  //These are completely arbitrary numbers. 
 
 	private boolean hitWall = false;
+
+	private boolean hitMazeWall = false;
+
 	private boolean ateTail = false;
 
 	private int snakeSquares[][];  //represents all of the squares on the screen
@@ -21,14 +24,14 @@ public class Snake {
 
 	private int currentHeading;  //Direction snake is going in, ot direction user is telling snake to go
 	private int lastHeading;    //Last confirmed movement of snake. See moveSnake method
-	
+
 	private int snakeSize;   //size of snake - how many segments?
 
 	private int growthIncrement = 2; //how many squares the snake grows after it eats a kibble
 
 	private int justAteMustGrowThisMuch = 0;
 
-	private int maxX, maxY, squareSize;  
+	private int maxX, maxY, squareSize;
 	private int snakeHeadX, snakeHeadY; //store coordinates of head - first segment
 
 	public Snake(int maxX, int maxY, int squareSize){
@@ -57,7 +60,7 @@ public class Snake {
 
 		currentHeading = DIRECTION_LEFT;
 		lastHeading = DIRECTION_LEFT;
-		
+
 		justAteMustGrowThisMuch = 0;
 	}
 
@@ -111,9 +114,9 @@ public class Snake {
 //		justAteMustGrowThisMuch += growthIncrement;
 //	}
 
-	protected void moveSnake(){
+	protected void moveSnake() {
 		//Called every clock tick
-		
+
 		//Must check that the direction snake is being sent in is not contrary to current heading
 		//So if current heading is down, and snake is being sent up, then should ignore.
 		//Without this code, if the snake is heading up, and the user presses left then down quickly, the snake will back into itself.
@@ -129,7 +132,7 @@ public class Snake {
 		if (currentHeading == DIRECTION_RIGHT && lastHeading == DIRECTION_LEFT) {
 			currentHeading = DIRECTION_LEFT; //keep going the same way
 		}
-		
+
 		//Did you hit the wall, snake? 
 		//Or eat your tail? Don't move. 
 
@@ -155,8 +158,8 @@ public class Snake {
 		//Increase all snake segments by 1
 		//All non-zero elements of array represent a snake segment
 
-		for (int x = 0 ; x < maxX ; x++) {
-			for (int y = 0 ; y < maxY ; y++){
+		for (int x = 0; x < maxX; x++) {
+			for (int y = 0; y < maxY; y++) {
 				if (snakeSquares[x][y] != 0) {
 					snakeSquares[x][y]++;
 				}
@@ -164,29 +167,40 @@ public class Snake {
 		}
 
 		//now identify where to add new snake head
-		if (currentHeading == DIRECTION_UP) {		
+		if (currentHeading == DIRECTION_UP) {
 			//Subtract 1 from Y coordinate so head is one square up
-			snakeHeadY-- ;
+			snakeHeadY--;
 		}
-		if (currentHeading == DIRECTION_DOWN) {		
+		if (currentHeading == DIRECTION_DOWN) {
 			//Add 1 to Y coordinate so head is 1 square down
-			snakeHeadY++ ;
+			snakeHeadY++;
 		}
-		if (currentHeading == DIRECTION_LEFT) {		
+		if (currentHeading == DIRECTION_LEFT) {
 			//Subtract 1 from X coordinate so head is 1 square to the left
-			snakeHeadX -- ;
+			snakeHeadX--;
 		}
-		if (currentHeading == DIRECTION_RIGHT) {		
+		if (currentHeading == DIRECTION_RIGHT) {
 			//Add 1 to X coordinate so head is 1 square to the right
-			snakeHeadX ++ ;
+			snakeHeadX++;
 		}
 
-		//Does this make snake hit the wall?
-		if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ) {
-			hitWall = true;	
-			SnakeGame.setGameStage(SnakeGame.GAME_OVER);
-			return;
+
+		//TN - code changed to add wall warp
+		//if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ){
+		if (snakeHeadX >= maxX) {
+			snakeHeadX = 0;
+		} else if (snakeHeadX < 0) {
+			snakeHeadX = maxX -1;
+		} else if (snakeHeadY >= maxY) {
+			snakeHeadY = 0;
+		} else if (snakeHeadY < 0) {
+			snakeHeadY = maxY -1;
 		}
+
+
+		//hitWall = true;
+		//SnakeGame.setGameStage(SnakeGame.GAME_OVER);
+		//return;
 
 		//Does this make the snake eat its tail?
 
@@ -198,12 +212,12 @@ public class Snake {
 		}
 
 		//Otherwise, game is still on. Add new head
-		snakeSquares[snakeHeadX][snakeHeadY] = 1; 
+		snakeSquares[snakeHeadX][snakeHeadY] = 1;
 
 		//If snake did not just eat, then remove tail segment
 		//to keep snake the same length.
 		//find highest number, which should now be the same as snakeSize+1, and set to 0
-		
+
 		if (justAteMustGrowThisMuch == 0) {
 			for (int x = 0 ; x < maxX ; x++) {
 				for (int y = 0 ; y < maxY ; y++){
@@ -218,7 +232,7 @@ public class Snake {
 			justAteMustGrowThisMuch -- ;
 			snakeSize ++;
 		}
-		
+
 		lastHeading = currentHeading; //Update last confirmed heading
 
 	}
@@ -236,6 +250,15 @@ public class Snake {
 		if (kibble.getKibbleX() == snakeHeadX && kibble.getKibbleY() == snakeHeadY){
 			justAteMustGrowThisMuch += growthIncrement;
 			return true;
+		}
+		return false;
+	}
+
+	//TN - if snake hits maze block, game will end
+	public boolean hitMazeWall(Maze maze) {
+		if (maze.getMazeX() == snakeHeadX && maze.getMazeY() == snakeHeadY) {
+			hitMazeWall = true;
+			SnakeGame.setGameStage(SnakeGame.GAME_OVER);
 		}
 		return false;
 	}
@@ -269,15 +292,16 @@ public class Snake {
 	}
 
 	public void reset() {
-		hitWall = false;
+		hitMazeWall = false;
 		ateTail = false;
 		fillSnakeSquaresWithZeros();
 		createStartSnake();
 
 	}
 
+	//if snake hits itself, game over
 	public boolean isGameOver() {
-		if (hitWall || ateTail){
+		if (hitMazeWall ||ateTail){
 			return true;
 		}
 		return false;

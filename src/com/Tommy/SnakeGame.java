@@ -44,6 +44,8 @@ public class SnakeGame {
 
 	static JFrame snakeFrame;
 	static DrawSnakeGamePanel snakePanel;
+	public static boolean warpWalls = false;
+
 	//Framework for this class adapted from the Java Swing Tutorial, FrameDemo and Custom Painting Demo. You should find them useful too.
 	//http://docs.oracle.com/javase/tutorial/displayCode.html?code=http://docs.oracle.com/javase/tutorial/uiswing/examples/components/FrameDemoProject/src/components/FrameDemo.java
 	//http://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html
@@ -100,7 +102,9 @@ public class SnakeGame {
 		ySquares = yPixelMaxDimension / squareSize;
 
 		componentManager = new GameComponentManager();
-		snake = new Snake(xSquares, ySquares, squareSize);
+
+		System.out.println("Warp walls = " + warpWalls);
+		snake = new Snake(xSquares, ySquares, squareSize, warpWalls);  //warp or not?
 		Kibble kibble = new Kibble(snake);
 		Maze maze = new Maze(snake);
 

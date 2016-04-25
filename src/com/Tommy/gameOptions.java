@@ -34,13 +34,24 @@ public class gameOptions extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                SnakeGame.warpWalls = warpWallsCheckBox.isSelected();  //Tell SnakeGame about selected options
+                //TODO add code to send other options too
+
                 SnakeGame.initializeGame();
                 SnakeGame.createAndShowGUI();
                 SnakeGame.setGameStage(SnakeGame.BEFORE_GAME);
                 SnakeGame.getGameStage();
                 SnakeGame.setGameStage(SnakeGame.DURING_GAME);
+
+
                 SnakeGame.newGame();
+
+
                 setVisible(false);
+
+
+
                 return;
             }
         });

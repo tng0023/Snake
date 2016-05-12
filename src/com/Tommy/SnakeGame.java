@@ -10,8 +10,8 @@ import javax.swing.*;
 
 public class SnakeGame {
 
-	public final static int xPixelMaxDimension = 501;  //Pixels in window. 501 to have 50-pixel squares plus 1 to draw a border on last square
-	public final static int yPixelMaxDimension = 501;
+	public static int xPixelMaxDimension = 501;  //Pixels in window. 501 to have 50-pixel squares plus 1 to draw a border on last square
+	public static int yPixelMaxDimension = 501;
 
 	public static int xSquares ;
 	public static int ySquares ;
@@ -37,13 +37,14 @@ public class SnakeGame {
 	private static int gameStage = BEFORE_GAME;  //use this to figure out what should be happening. //FINDBUGS - added final
 	//Other classes like Snake and DrawSnakeGamePanel will query this, and change its value
 
-	protected final static long clockInterval = 200; //controls game speed
+	protected static long clockInterval = 200; //controls game speed
 	//Every time the clock ticks, the snake moves
 	//This is the time between clock ticks, in milliseconds
 	//1000 milliseconds = 1 second.
 
 	static JFrame snakeFrame;
 	static DrawSnakeGamePanel snakePanel;
+	public static boolean warpWalls = false;
 	//Framework for this class adapted from the Java Swing Tutorial, FrameDemo and Custom Painting Demo. You should find them useful too.
 	//http://docs.oracle.com/javase/tutorial/displayCode.html?code=http://docs.oracle.com/javase/tutorial/uiswing/examples/components/FrameDemoProject/src/components/FrameDemo.java
 	//http://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html
@@ -100,7 +101,9 @@ public class SnakeGame {
 		ySquares = yPixelMaxDimension / squareSize;
 
 		componentManager = new GameComponentManager();
-		snake = new Snake(xSquares, ySquares, squareSize);
+		//snake = new Snake(xSquares, ySquares, squareSize);
+		System.out.println("Warp walls = " + warpWalls);
+		snake = new Snake(xSquares, ySquares, squareSize, warpWalls);
 		Kibble kibble = new Kibble(snake);
 		Maze maze = new Maze(snake);
 
@@ -131,6 +134,27 @@ public class SnakeGame {
 	public static void setGameStage(int gameStage) {
 		SnakeGame.gameStage = gameStage;
 	}
-
+	public static long getClockInterval() {
+		return clockInterval;
 	}
+
+	public static void setClockInterval(long clockInterval) {
+		SnakeGame.clockInterval = clockInterval;
+	}
+	public static int getxPixelMaxDimension() {
+		return xPixelMaxDimension;
+	}
+
+	public static void setxPixelMaxDimension(int xPixelMaxDimension) {
+		SnakeGame.xPixelMaxDimension = xPixelMaxDimension;
+	}
+
+	public static int getyPixelMaxDimension() {
+		return yPixelMaxDimension;
+	}
+
+	public static void setyPixelMaxDimension(int yPixelMaxDimension) {
+		SnakeGame.yPixelMaxDimension = yPixelMaxDimension;
+	}
+}
 

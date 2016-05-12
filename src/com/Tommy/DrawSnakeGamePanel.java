@@ -33,8 +33,8 @@ public class DrawSnakeGamePanel extends JPanel {
 		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		String highscore = score.getStringHighScore();
 		String textScore = score.getStringScore();
-		g.drawString("Score: " + textScore, 500, 500);
-		g.drawString("High Score: " + highscore, 450, 525);
+		g.drawString("Score: " + textScore, SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension);
+		g.drawString("High Score: " + highscore, SnakeGame.xPixelMaxDimension - 50, SnakeGame.yPixelMaxDimension + 50);
 	}
 
 	public Dimension getPreferredSize() {

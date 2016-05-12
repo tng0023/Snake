@@ -12,81 +12,75 @@ public class gameOptions extends JFrame {
 
     private JPanel root;
     private JLabel Options;
-    private JComboBox speedChoice;
     private JButton submitButton;
     private JCheckBox warpWallsCheckBox;
-    private JComboBox screenSize;
+    private JRadioButton smallRadioButton;
+    private JRadioButton mediumRadioButton;
+    private JRadioButton largeRadioButton;
+    private JRadioButton slowRadioButton;
+    private JRadioButton mediumRadioButton1;
+    private JRadioButton fastRadioButton;
+
+    private ButtonGroup screenSize = new ButtonGroup();
+    private ButtonGroup speed = new ButtonGroup();
 
     protected gameOptions() {
         super("OPTIONS");
         setContentPane(root);
         setPreferredSize(new Dimension(700, 500));
-
-        configureSpeed();
-        screenSize();
+        setUp();
 
         pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
-
+        //set up button to play the game and initiates options and game screen
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                SnakeGame.warpWalls = warpWallsCheckBox.isSelected();
+                gameSettings();
                 SnakeGame.initializeGame();
                 SnakeGame.createAndShowGUI();
-                SnakeGame.setGameStage(SnakeGame.BEFORE_GAME);
-                SnakeGame.getGameStage();
-                SnakeGame.setGameStage(SnakeGame.DURING_GAME);
                 SnakeGame.newGame();
                 setVisible(false);
                 return;
             }
         });
-
+        //checkbox for turning warp walls on and off
         warpWallsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (gameOptions.this.warpWallsCheckBox.isSelected()){
-
+                boolean on = true;
+                if (gameOptions.this.warpWallsCheckBox.isSelected()) {
+                    on = true;
+                    System.out.println("Walls on");
                 }
-
-
-                }
-
-        });
-
-        speedChoice.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                }
-        });
-}
-
-
-    private void configureSpeed() {
-        for (int x = 1; x <= 3; x++) {
-            if (x == 1) {
-                speedChoice.addItem(x + " Slow");
-            } else if (x == 2) {
-                speedChoice.addItem(x + " fast");
-            } else if (x == 3) {
-                speedChoice.addItem(x + " very fast");
             }
-        }
+
+        });
     }
 
-    private void screenSize() {
-        for (int x = 1; x <= 3; x++) {
-            if (x == 1) {
-                screenSize.addItem(x + " Small");
-            } else if (x == 2) {
-                screenSize.addItem(x + " Medium");
-            } else if (x == 3) {
-                screenSize.addItem(x + " Large");
-            }
-        }
+    //buttons for increasing speed and size of screen
+    private void setUp() {
+        speed.add(slowRadioButton);
+        speed.add(mediumRadioButton1);
+        speed.add(fastRadioButton);
+        screenSize.add(smallRadioButton);
+        screenSize.add(mediumRadioButton);
+        screenSize.add(largeRadioButton);
+    }
+
+    //creates action from selected speed and screen options buttons
+    public void gameSettings(){
+        int gameSpeed = Integer.parseInt(speed.getSelection().getActionCommand());
+        SnakeGame.setClockInterval(gameSpeed);
+
+        int screen = Integer.parseInt(screenSize.getSelection().getActionCommand());
+
+        SnakeGame.setxPixelMaxDimension(screen);
+        SnakeGame.setyPixelMaxDimension(screen);
+
     }
 }

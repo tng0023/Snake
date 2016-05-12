@@ -34,7 +34,11 @@ public class Snake {
 	private int maxX, maxY, squareSize;
 	private int snakeHeadX, snakeHeadY; //store coordinates of head - first segment
 
-	public Snake(int maxX, int maxY, int squareSize){
+	//public Snake(int maxX, int maxY, int squareSize){
+	private boolean warp = false;
+
+	public Snake(int maxX, int maxY, int squareSize, boolean warp){
+		this.warp = warp;
 		this.maxX = maxX;
 		this.maxY = maxY;
 		this.squareSize = squareSize;
@@ -187,23 +191,24 @@ public class Snake {
 
 		//TN - code changed to add wall warp
 		//if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ){
+	if(warp) {
 		if (snakeHeadX >= maxX) {
 			snakeHeadX = 0;
 		} else if (snakeHeadX < 0) {
-			snakeHeadX = maxX -1;
+			snakeHeadX = maxX - 1;
 		} else if (snakeHeadY >= maxY) {
 			snakeHeadY = 0;
 		} else if (snakeHeadY < 0) {
-			snakeHeadY = maxY -1;
+			snakeHeadY = maxY - 1;
 		}
-
-
-		//hitWall = true;
-		//SnakeGame.setGameStage(SnakeGame.GAME_OVER);
-		//return;
+	}else{
+		if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ){
+			SnakeGame.setGameStage(SnakeGame.GAME_OVER);
+			return;
+		}
+	}
 
 		//Does this make the snake eat its tail?
-
 		if (snakeSquares[snakeHeadX][snakeHeadY] != 0) {
 
 			ateTail = true;
